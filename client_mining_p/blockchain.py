@@ -145,17 +145,22 @@ blockchain = Blockchain()
 def mine():
     values = request.get_json()
 
-    print(values)
-
     required = ['proof']
     
     if not all(k in values for k in required):
         return 'Missing Values', 400
 
+
+
     # We run the proof of work algorithm to get the next proof...
     last_block = blockchain.last_block
     last_proof = last_block['proof']
-    proof = blockchain.valid_proof(last_proof, values['proof'])
+    
+    if  not blockchain.valid_proof(last_proof, values['proof']):
+        response = {
+            'message': 'Proof is invalid or already submitted'
+        }
+        return jsonify(response)
 
     # We must receive a reward for finding the proof.
     # The sender is "0" to signify that this node has mine a new coin
