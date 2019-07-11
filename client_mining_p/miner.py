@@ -6,6 +6,19 @@ import sys
 
 # TODO: Implement functionality to search for a proof 
 
+def get_proof_number(last_proof):
+    proof = 0
+    while validate_proof(last_proof, proof) is False:
+        proof += 1
+
+    return proof
+
+
+def validate_proof(last_proof, proof):
+    guess = f"{last_proof}{proof}".encode()
+    guess_hash = hashlib.sha256(proof_guess).hexdigest()
+    return proof_guess_hash[:6] == "000000"
+
 
 if __name__ == '__main__':
     # What node are we interacting with?
